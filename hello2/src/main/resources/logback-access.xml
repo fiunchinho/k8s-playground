@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="CONSOLE_ACCESS" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%t{yyyy-MM-dd HH:mm:ss,SSS}  INFO 00000 [%15.15I] %-40.40l : %h %l %u [%t] "%r" %s %b "%i{Referer}" "%i{User-Agent}" %D "%header{X-Parent-Id}" "%header{X-Trace-Id}"%n</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+
+    <appender-ref ref="CONSOLE_ACCESS" />
+</configuration>

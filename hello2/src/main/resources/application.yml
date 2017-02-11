@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: hello
+  main:
+    banner-mode: "OFF"
+
+server:
+  port: 8000

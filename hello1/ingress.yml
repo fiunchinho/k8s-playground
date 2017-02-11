@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: hello1
+  annotations:
+    ingress.kubernetes.io/upstream-fail-timeout: "23"
+spec:
+  rules:
+  - host: app1.k8s.com
+    http:
+      paths:
+      - backend:
+          serviceName: hello1
+          servicePort: 80

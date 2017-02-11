@@ -1,0 +1,33 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hello2
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hello2
+        environment: pro
+    spec:
+      containers:
+        - name: hello2
+          image: "registry.spain.schibsted.io/k8s-hello2"
+          ports:
+            - name: http
+              containerPort: 8000
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 15
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 10
+            timeoutSeconds: 1

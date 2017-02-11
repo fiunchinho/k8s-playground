@@ -1,0 +1,66 @@
+group 'com.scmspain'
+
+repositories {
+    mavenCentral()
+    maven { url "https://repo.spring.io/release" }
+    maven {
+        credentials {
+            username project.hasProperty('artifactory_scm_user')? project.artifactory_scm_user: System.env.ARTIFACTORY_SCM_USER
+            password project.hasProperty('artifactory_scm_password')? project.artifactory_scm_password: System.env.ARTIFACTORY_SCM_PASSWORD
+        }
+
+        url "http://artifactory.scmspain.com/artifactory/libs-release-ms"
+    }
+}
+
+buildscript {
+    ext {
+        springBootVersion = '1.3.5.RELEASE'
+        feignVersion = '8.16.2'
+    }
+    repositories {
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath group: "org.springframework.boot", name: "spring-boot-gradle-plugin", version: springBootVersion
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+
+mainClassName = "com.schibsted.hello.Application"
+
+targetCompatibility = 1.8
+
+bootRun {
+    environment SPRING_PROFILES_ACTIVE: environment.SPRING_PROFILES_ACTIVE ?: "dev"
+}
+
+task deploy(dependsOn: 'installDist', type:Exec) {
+    commandLine 'sh', './deploy.sh', project.name
+}
+
+dependencies {
+    // Spring dependencies
+    compile("org.springframework.boot:spring-boot-starter-web")
+
+    // Feign
+    compile("javax.inject:javax.inject:1")
+
+    // Logging
+    compile("ch.qos.logback:logback-classic:1.1.7")
+    compile("net.rakugakibox.springbootext:spring-boot-ext-logback-access:1.6")
+
+    // Api docs
+    compile("io.springfox:springfox-swagger2:2.4.0")
+
+    // Spring monitoring and tooling to inspect things at runtime
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+
+    // Jackson Java time support
+    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.7.4")
+}

@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: "hello1"
+  annotations:
+    ingress.kubernetes.io/upstream-fail-timeout: "24"
+spec:
+  selector:
+    app: "hello1"
+  ports:
+    - protocol: "TCP"
+      port: 80
+      targetPort: 8000
+  type: "ClusterIP"
